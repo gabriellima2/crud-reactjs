@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import './Comment.css';
+import './Contact.css';
 
 export default function Comment(props) {
     const { 

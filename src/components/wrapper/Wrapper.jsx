@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback, createContext } from "react";
 import Modal from "../modal/Modal";
-import Comment from '../comment/Comment';
+import Contact from '../contact/Contact';
 
 import './Wrapper.css';
 
@@ -122,7 +122,7 @@ export default function Wrapper() {
                         <tbody id='tbody'>
                             {
                                 allContacts.map( contact => (
-                                    <Comment 
+                                    <Contact 
                                         id={ contact.id } 
                                         name={ contact.name } 
                                         email={ contact.email } 
