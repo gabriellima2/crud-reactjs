@@ -8,16 +8,19 @@
 #add-contact-area {
     width: 80%;
     margin-top: 40px;
-    padding: 10px 20px;
+    padding: 10px 30px;
 
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    gap: 30px;
+    justify-content: space-between;
 
     border-radius: 10px;
     background-color: var(--bg-secondary-color);
     transition: 0.2s ease-out;
+}
+
+#add-contact-area {
+    text-transform: uppercase;
 }
 
 #add-btn {
