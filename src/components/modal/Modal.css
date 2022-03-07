@@ -1,0 +1,128 @@
+#modal-area {
+    height: 100vh;
+    width: 100vw;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+#modal {
+    width: 80vw;
+    max-width: 500px;
+    max-height: 270px;
+    padding: 40px 30px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 35px;
+
+    position: relative;
+    border-radius: 5px;
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.4);
+    background: var(--bg-secondary-color);
+}
+
+#inputs-area {
+    width: 100%;
+    padding: 10px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+#name-area, #email-area {
+    display: flex;
+    width: 70%;
+    position: relative;
+}
+
+.label {
+    position: absolute;
+    z-index: 1000;
+    pointer-events: none;
+    top: 13%;
+    left: 3%;
+    font-size: 0.9em;
+}
+
+.label.move {
+    animation: animateLabel 0.2s ease-in forwards;
+}
+
+@keyframes animateLabel {
+    to {
+        top: -50%;
+        left: 2%;
+        font-size: 0.7em;
+    }
+}
+
+.input {
+    width: 100%;
+    border: none;
+    padding: 5px;
+    outline: none;
+    border-bottom: 1px solid #b1b1b1cc;
+    font-family: var(--font);
+    background: none;
+}
+
+#close-btn {
+    position: absolute;
+    top: -4px;
+    right: 0px;
+
+    color: #999999;
+    border: none;
+    padding: 10px;
+    background: none;
+    cursor: pointer;
+}
+
+#lower-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+#erro {
+    font-size: 0.7em;
+    color: red;
+}
+
+#submit-btn {
+    border: none;
+    padding: 10px 15px;
+    color: var(--dark-theme-font-color);
+    border-radius: 5px;
+
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+    background-color: var(--secondary-color);
+}
+
+#submit-btn:hover {
+    background-color: var(--primary-color);
+}
+
+.dark-true input {
+    color: #ffff;
+    border-bottom: 1px solid #ffff;
+}
+
+.dark-true #modal {
+    background-color: var(--bg-secondary-dark-color);
+}

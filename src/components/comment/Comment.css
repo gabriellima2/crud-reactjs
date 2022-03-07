@@ -1,0 +1,54 @@
+#data > td {
+    text-align: center;
+    padding: 5px;
+    word-wrap: break-word;
+}
+
+.handle-table-item {
+    max-width: 160px;
+}
+
+#data:hover {
+    background-color: var(--terciary-color);
+    color: var(--dark-theme-font-color);
+}
+
+#btns-area {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+}
+
+.action-btns {
+    padding: 5px 15px;
+    border-radius: 5px;
+    border: 2px solid #000;
+
+    font-family: var(--font);
+    font-size: 0.8em;
+    font-weight: 700;
+    letter-spacing: 1px;
+
+    cursor: pointer;
+    transition: all 0.2s ease-out;
+    background: none;
+}
+
+#del-btn {
+    background-color: #b80000;
+    color: #fff;
+}
+
+#del-btn:hover {
+    background-color: #8a0000;
+}
+
+#edit-btn:hover {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.dark-true .action-btns {
+    color: var(--dark-theme-font-color);
+    border: 2px solid var(--light-bg-color);
+}

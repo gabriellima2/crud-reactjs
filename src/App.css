@@ -1,0 +1,119 @@
+#container {
+    width: 100%;
+    height: 100%;
+
+    display: grid;
+    grid-template-rows: 100px auto 100px;
+    transition: 0.2s ease-in;
+}
+
+#header {
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    position: relative;
+    background: none;
+}
+
+#header::after {
+    content: '';
+    display: block;
+    
+    width: 100%;
+    height: 1px;
+
+    position: absolute;
+    bottom: 0;
+    border-radius: 50%;
+    background-color: var(--dark-bg-color);
+}
+
+#theme-toggle {
+    background: none;
+    padding: 5px 15px;
+    font-size: 1.4em;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+}
+
+#logo {
+    letter-spacing: 3px;
+    font-size: 1.1em;
+    transition: 0.2s ease-in;
+    color: var(--light-theme-font-color);
+}
+
+#logo:hover, #theme-toggle:hover {
+    color: var(--primary-color);
+}
+
+#footer {
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    position: relative;
+
+    background-color: #111111;
+}
+
+#footer::before {
+    content: '';
+    display: block;
+
+    width: 100%;
+    height: 1px;
+
+    position: absolute;
+    top: 0;
+    border-radius: 50%;
+    background-color: var(--dark-bg-color);
+}
+
+#footer > p {
+    letter-spacing: 2px;
+}
+
+#link, #footer > p {
+    color: #ffff;
+    font-size: 0.8em;
+}
+
+#link::after {
+    content: '';
+    display: block;
+
+    width: 0%;
+    height: 1px;
+
+    transition: 0.2s ease-in;
+    background-color: #ffff;
+}
+
+#link:hover::after {
+    width: 100%;
+}
+
+
+.dark-false {
+    background-color: var(--light-bg-color);
+    color: var(--light-theme-font-color);
+}
+
+.dark-true {
+    background-color: var(--dark-bg-color);
+    color: var(--dark-theme-font-color);
+}
+
+.dark-true #header::after, .dark-true #footer::before {
+    background-color: var(--light-bg-color);
+}
+
+.dark-true #theme-toggle, .dark-true #logo, .dark-true #footer {
+    color: var(--dark-theme-font-color);
+}

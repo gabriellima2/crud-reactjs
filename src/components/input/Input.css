@@ -1,0 +1,35 @@
+.label {
+    position: absolute;
+    z-index: 1000;
+    pointer-events: none;
+    top: 13%;
+    left: 3%;
+    font-size: 0.9em;
+}
+
+.label.move {
+    animation: animateLabel 0.2s ease-in forwards;
+}
+
+@keyframes animateLabel {
+    to {
+        top: -50%;
+        left: 2%;
+        font-size: 0.7em;
+    }
+}
+
+.input {
+    width: 100%;
+    border: none;
+    padding: 5px;
+    outline: none;
+    border-bottom: 1px solid #b1b1b1cc;
+    font-family: var(--font);
+    background: none;
+}
+
+.dark-true input {
+    color: #ffff;
+    border-bottom: 1px solid #ffff;
+}
