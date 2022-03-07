@@ -19,7 +19,8 @@ Foi usado a ferramenta [Vite](https://vitejs.dev) e o [ReactJS](https://pt-br.re
 - Armazenamento dos dados no LocalStorage.
 
 <h2>Rodando o projeto:</h2>
-OBS: É necessário que tenha o [NodeJS](https://nodejs.org/en/)  e o [Git](https://git-scm.com) instalados em sua máquina!
+
+OBS: É necessário que tenha o [NodeJS](https://nodejs.org/en/) e o [Git](https://git-scm.com) instalados em sua máquina!
 
 <h2></h2>
 
