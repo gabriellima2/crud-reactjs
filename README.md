@@ -21,6 +21,8 @@ Foi usado a ferramenta [Vite](https://vitejs.dev) e o [ReactJS](https://pt-br.re
 <h2>Rodando o projeto:</h2>
 OBS: É necessário que tenha o [NodeJS](https://nodejs.org/en/)  e o [Git](https://git-scm.com) instalados em sua máquina!
 
+<h2></h2>
+
 ```bash 
 1. Clone o repositório:
 $ git clone https://github.com/gabriellima2/crud-reactjs.git
