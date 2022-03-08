@@ -9,7 +9,7 @@
 }
 
 #data:hover {
-    background-color: var(--terciary-color);
+    background-color: var(--tertiary-color);
     color: var(--dark-theme-font-color);
 }
 
