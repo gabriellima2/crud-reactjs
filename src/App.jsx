@@ -1,45 +1,39 @@
-import Wrapper from './components/wrapper/Wrapper';
+import { useState, useEffect } from "react";
 
-import './App.css';
-import { useState, useEffect } from 'react';
+import Wrapper from "./components/wrapper/Wrapper";
+import DataContextProvider from "./utils/context/DataContext/Provider";
+import dataInLocalStorage from "./utils/LocalStorage";
 
-function darkThemeDataInLocalStorage() {
-  const darkThemeData = localStorage.getItem('darkTheme');
+import "./App.css";
 
-  if ( !darkThemeData ) {
-    localStorage.setItem('darkTheme', JSON.stringify({active: false}));
-    return;
-  };
 
-  const { active } = JSON.parse(darkThemeData);
-  return active;
-};
+const DARK_THEME = dataInLocalStorage("darkTheme");
 
-function App() {
-  const [ darkTheme, setDarkTheme ] = useState(darkThemeDataInLocalStorage);
+export default function App() {
+  const [ dark, setDark ] = useState(DARK_THEME || {active: false});
   
   useEffect(() => {
-    localStorage.setItem('darkTheme', JSON.stringify({active: darkTheme}))
-  }, [ darkTheme ]);
+    localStorage.setItem("darkTheme", JSON.stringify(dark))
+  }, [ dark ]);
 
   const handleTheme = () => {
-    setDarkTheme(!darkTheme);
-  }
+    setDark({active: !dark.active});
+  };
 
   return (
-    <div id='container' className={`dark-${darkTheme}`}>
-      <header id='header'>
-        <a href='#' id='logo'>GABRIEL</a>
-        <button id='theme-toggle' onClick={ handleTheme }>☀</button>
-      </header>
-      <Wrapper />
+    <DataContextProvider>
+      <div id="container" className={`dark-${dark.active}`}>
+        <header id="header">
+          <a href="#" id="logo">GABRIEL</a>
+          <button id="theme-toggle" onClick={ handleTheme }>☀</button>
+        </header>
+        <Wrapper />
+        <footer id="footer">
+          <p>Gabriel 2022</p>
+          <a href="" id="link">LINK A</a>
+        </footer>
+      </div>
+    </DataContextProvider>
 
-      <footer id='footer'>
-        <p>Gabriel 2022</p>
-        <a href='' id='link'>LINK A</a>
-      </footer>
-    </div>
   );
-}
-
-export default App
+};

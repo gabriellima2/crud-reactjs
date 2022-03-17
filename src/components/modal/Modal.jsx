@@ -1,153 +1,161 @@
-import { useState, useCallback, forwardRef, useImperativeHandle, useRef, useContext } from 'react';
-import Input from '../input/Input';
+import { useState,
+    forwardRef,
+    useImperativeHandle,
+    useContext,
+    useEffect }
+from "react";
 
-import './Modal.css';
+import DataContext from "../../utils/context/DataContext";
+import Input from "../input/Input";
+
+import "./Modal.css";
 
 
 function Modal(props, ref) {
-    const { 
-        allContacts,
-        setAllContacts,
-        editDataValues,
-        setEditDataValues,
-        isEditing,
-        setIsEditing,
-        EDIT_STANDARD_DATA_VALUE
-    } = useContext(props.ctx);
+    const ctx = useContext(DataContext);
 
-    const inputNameRef = useRef(null);
-    const inputEmailRef = useRef(null);
+    const [ name, setName ] = useState("");
+    const [ email, setEmail ] = useState("");
 
     const [ isVisible, setIsVisible ] = useState(false);
-    const [ handleError, setHandleError ] = useState({
-        active: false,
-        msg: null
-    });
+    const [ errorMessage, setErrorMessage ] = useState({active: false, msg: null})
 
-
-    // Pega os valores dos inputs valida e verifica se é uma edição ou adição.
-    const validate = () => {
-        const valueName = inputNameRef.current.value;
-        const valueEmail = inputEmailRef.current.value;
-
-        const verifyEmail = () => {
-            const rgx = /^[\w0-9(_.\-)?]+@[\w0-9]+\.[\w\.]+[\w]?$/;
-            return rgx.test(valueEmail);
-        }
-
-        if ( !valueName || !valueEmail ) {
-            setHandleError({
-                active: true,
-                msg: 'Preencha todo os campos!'
-            });
-            return;
+    useEffect(() => {
+        if (ctx.editingData.active) {
+            setName(ctx.editingData.name);
+            setEmail(ctx.editingData.email);
         };
+    }, [ctx.editingData]);
 
-        if ( !verifyEmail() ) {
-            setHandleError({
-                active: true,
-                msg: 'Digite um Email válido!'
-            });
-            return;
-        };
-
-        if ( isEditing ) {
-            handleEdit(valueName, valueEmail);
-            return;
-        };
-
-        createContact(valueName, valueEmail);
+    const handleVisibility = () => {
+        setIsVisible(!isVisible);
     };
 
-    const handleEdit = (name, email) => {
-        allContacts.map( contact => {
-            if ( contact.id === editDataValues.id ) {
+    const closeModal = () => {
+        setIsVisible(false);
+        setErrorMessage({active: false, msg: null});
+        
+        ctx.setEditingData({
+            id: null,
+            name: null,
+            email: null,
+            active: false
+        });
+
+        setName("");
+        setEmail("");
+    };
+
+    const handleClose = ({ target }) => {
+        if (target.id === "modal-area" || target.id === "close-btn") {
+            closeModal();
+        };
+    };
+
+    const validate = () => {
+        const emailValidate = () => {
+            const rgx = /^[\w0-9(_.\-)?]+@[\w0-9]+\.[\w\.]+[\w]?$/;
+            return rgx.test(email);
+        };
+
+        if (!name || !email) {
+            setErrorMessage({
+                active: true,
+                msg: "Por favor, preencha todos os campos!"
+            });
+            return;
+        } else if (!emailValidate()) {
+            setErrorMessage({
+                active: true,
+                msg: "Digite um Email válido!"
+            });
+            return;
+        };
+
+        if ( ctx.editingData.active ) return handleEdit();
+    
+        createNewContact();
+    };
+
+    const handleEdit = () => {
+        ctx.contacts.map(contact => {
+            if (contact.id === ctx.editingData.id) {
                 contact.name = name;
                 contact.email = email;
-                setAllContacts( [...allContacts] );
+                ctx.setContacts([...ctx.contacts]);
             };
         });
-        handleDesactiveModal();
+        closeModal();
     };
 
-    const createContact = (name, email) => {        
+    const createNewContact = () => {
         const newContact = {
-            id: props.id,
+            id: ctx.id,
             name,
             email
         };
-        props.setId( state => state + 1 );
-        setAllContacts( [...allContacts, newContact] );
-        handleDesactiveModal();
+
+        ctx.setId(current => current + 1);
+        ctx.setContacts([ ...ctx.contacts, newContact ]);
+        closeModal();
     };
 
-    // Para fechar o modal no X ou clicando na area de fora do modal.
-    const closeModal = useCallback(({ target }) => {
-        if ( target.id === 'modal-area' || target.id === 'close-btn' ) {
-            handleDesactiveModal();
-        };
-    }, []);
-
-    const handleActiveModal = useCallback(() => setIsVisible(true), []);
-
-    const handleDesactiveModal = useCallback(() => {
-        setIsVisible(false);
-        setHandleError({
-            active: false,
-            msg: null
-        });
-        
-        setEditDataValues(EDIT_STANDARD_DATA_VALUE);
-        setIsEditing(false);
-    }, []);
-
-    useImperativeHandle( ref, () => {
+    useImperativeHandle(ref, () => {
         return {
-            handleActiveModal,
+            handleVisibility
         };
     });
 
     if ( !isVisible ) return null;
 
     return (
-        <div id='modal-area' onClick={ closeModal }>
-            <div id='modal'>
-                <button onClick={ closeModal } id='close-btn'>X</button>
-                <div id='inputs-area'>
-                    <div id='name-area'>
-                        <Input
-                            value={ editDataValues.name || null }
-                            required={ true }
-                            autoFocus={ true }
-                            ref={ inputNameRef }
-                            label='Nome'
-                            type='text'
-                            id='name'
-                        />
+        <div id="modal-area" onClick={handleClose}>
+            <div id="modal">
+                <button onCanPlay={handleClose} id="close-btn">X</button>
+                <div id="input-area">
+                    <div id="name-area">
+                        <Input attributes={{
+                            value: ctx.editingData.name || name,
+                            required: true,
+                            autoFocus: true,
+                            label: "Nome",
+                            type: "text",
+                            id: "nome"
+                        }} 
+                        setData={setName} />
                     </div>
-                    <div id='email-area'>
-                        <Input
-                            value={ editDataValues.email || null }
-                            required={ true }
-                            autoFocus={ false }
-                            ref={ inputEmailRef }
-                            label='Email'
-                            type='email'
-                            id='email'
-                        />
+                    <div id="email-area">
+                        <Input attributes={{
+                            value: ctx.editingData.email || email,
+                            required: true,
+                            autoFocus: false,
+                            label: "Email",
+                            type: "email",
+                            id: "email"
+                        }} 
+                        setData={setEmail} />
+                    </div>
+                    <div id="actions-area">
+                        <span id="error">
+                            {
+                                errorMessage.active ?
+                                errorMessage.msg :
+                                null
+                            }
+                        </span>
+                        <button
+                            id="submit-btn"
+                            onClick={validate}>
+                        { 
+                            ctx.editingData.active ?
+                            "Confirmar" :
+                            "Enviar"
+                        }
+                        </button>
                     </div>
                 </div>
-                <div id='lower-area'>
-                    <span id='erro'>{ handleError.active ? handleError.msg : null }</span>
-                    <button
-                        id='submit-btn'
-                        onClick={ validate }
-                    >{ isEditing ? 'Confirmar' : 'Enviar' }</button>
-                </div>
-
-            </div>       
+            </div>
         </div>
-        
     );
 };
 

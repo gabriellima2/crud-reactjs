@@ -1,52 +1,60 @@
-import { useContext } from 'react';
+import { useContext } from "react";
+import DataContext from "../../utils/context/DataContext";
 
-import './Contact.css';
+import "./Contact.css";
 
-export default function Comment(props) {
-    const { 
-        allContacts,
-        setAllContacts,
-        setEditDataValues,
-        setIsEditing,
-        ...rest 
-    } = useContext(props.ctx);
 
-    const handleEdit = id => {
-        allContacts.map( contact => {
-            if ( contact.id === id ) {
-                setIsEditing(true);
-                setEditDataValues({
-                    id: contact.id,
-                    name: contact.name,
-                    email: contact.email
+export default function Comment({ data, openModal }) {
+    const ctx = useContext(DataContext);
+
+    const handleEdit = () => {
+        ctx.contacts.map( contact => {
+            if ( contact.id === data.id ) {
+                ctx.setEditingData({
+                    id: data.id,
+                    name: data.name,
+                    email: data.email,
+                    active: true
                 });
-                props.openModal();
+                openModal();
             };
         });
     };
     
-    const handleDelete = id => {
-        setAllContacts( allContacts.filter( contact => {
-            return contact.id !== id;
+    const handleDelete = () => {
+        ctx.setContacts(ctx.contacts.filter((contact) => {
+            return contact.id !== data.id
         }));
+    };
+
+    const handleKeyDown = ({key, target}) => {
+        if (key === "Enter") {
+            if (target.id === "edit-btn") {
+                handleEdit();
+            } else if (target.id === "del-btn") {
+                handleDelete();
+            };
+        };
     };
 
     return (
         <>
-            <tr id='data'>
-                <td>{ props.id }</td>
-                <td className='handle-table-item'>{ props.name }</td>
-                <td className='handle-table-item'>{ props.email }</td>
-                <td id='btns-area'>
+            <tr id="data">
+                <td>{ data.id }</td>
+                <td className="handle-table-item">{data.name}</td>
+                <td className="handle-table-item">{data.email}</td>
+                <td id="btns-area">
                     <button
-                        id='edit-btn'
-                        className='action-btns'
-                        onClick={ () => handleEdit(props.id) }
+                        id="edit-btn"
+                        className="action-btns"
+                        onClick={handleEdit}
+                        onKeyDown={handleKeyDown}
                     >Edit</button>
                     <button
-                        id='del-btn'
-                        className='action-btns'
-                        onClick={ () => handleDelete(props.id) }
+                        id="del-btn"
+                        className="action-btns"
+                        onClick={handleDelete}
+                        onKeyDown={handleKeyDown}
                     >Del</button>
                 </td>
             </tr>

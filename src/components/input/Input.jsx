@@ -1,41 +1,43 @@
-import { useState, forwardRef, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-import './Input.css';
+import "./Input.css";
 
-function Input(props, ref) {
-    const [ style, setStyle ] = useState('');
+export default function Input({ attributes, setData }) {
+    const [ style, setStyle ] = useState("");
 
     // Quando renderizar verifica se tem valor no input, se tiver move o label.
     useEffect(() => {
-        if ( ref.current.value ) handleFocus();
+        if ( attributes.value ) handleFocus();
     }, []);
 
     const handleBlur = () => {
-        if ( props.value === '' ) {
-            setStyle('');
+        if ( !attributes.value ) {
+            setStyle("");
         };
     };
 
-    const handleFocus = () => setStyle('move');
+    const handleFocus = () => setStyle("move");
+
+    const handleChange = ({ target }) => {
+        setData(target.value);
+    };
 
     return (
         <>
-            <label className={`label ${style}`}>{ props.label }</label>
+            <label className={`label ${style}`}>{attributes.label}</label>
             <input
-                onBlur={ handleBlur }
-                onFocus={ handleFocus }
-                autoFocus={ props.autoFocus }
-                defaultValue={ props.value }
-                required={ props.required }
-                type={ props.type }
-                id={ props.id }
-                ref={ ref }
-                autoComplete='off'
-                className='input'
-                maxLength='50'
+                onChange={handleChange}
+                onBlur={handleBlur}
+                onFocus={handleFocus}
+                autoFocus={attributes.autoFocus}
+                defaultValue={attributes.value}
+                required={attributes.required}
+                type={attributes.type}
+                id={attributes.id}
+                autoComplete="off"
+                className="input"
+                maxLength="50"
             />
         </>
     );
 };
-
-export default forwardRef(Input);
