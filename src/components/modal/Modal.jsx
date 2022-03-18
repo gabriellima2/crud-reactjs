@@ -31,6 +31,10 @@ function Modal(props, ref) {
         setIsVisible(!isVisible);
     };
 
+    const handleKeyDown = ({ key }) => {
+        if (key === 'Escape') return closeModal();
+    };
+
     const closeModal = () => {
         setIsVisible(false);
         setErrorMessage({active: false, msg: null});
@@ -109,9 +113,9 @@ function Modal(props, ref) {
     if ( !isVisible ) return null;
 
     return (
-        <div id="modal-area" onClick={handleClose}>
+        <div id="modal-area" onClick={handleClose} onKeyDown={handleKeyDown}>
             <div id="modal">
-                <button onCanPlay={handleClose} id="close-btn">X</button>
+                <button id="close-btn">X</button>
                 <div id="input-area">
                     <div id="name-area">
                         <Input attributes={{
